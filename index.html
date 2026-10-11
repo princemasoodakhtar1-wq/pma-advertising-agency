@@ -136,7 +136,6 @@ export default function App() {
               <p className="text-sm">Empowering brands globally through data-driven digital advertising.</p>
             </div>
             <div className="flex justify-end space-x-4">
-              {/* Social placeholders */}
               <div className="w-8 h-8 rounded-full bg-slate-800 hover:bg-indigo-600 transition-colors flex items-center justify-center cursor-pointer"><Globe className="w-4 h-4" /></div>
               <div className="w-8 h-8 rounded-full bg-slate-800 hover:bg-indigo-600 transition-colors flex items-center justify-center cursor-pointer"><MessageSquare className="w-4 h-4" /></div>
             </div>
@@ -320,6 +319,7 @@ function HomeView({ user }) {
                   <h3 className="text-2xl font-bold mb-2">Direct Access</h3>
                   <p className="text-slate-400 mb-8 font-light">Skip the queue. Connect directly with our campaign managers for immediate consultation.</p>
                   
+                  {/* Updated WhatsApp and Email Links */}
                   <a 
                     href="https://wa.me/923704093197" 
                     target="_blank" 
@@ -443,7 +443,6 @@ function AdSubmissionForm({ user }) {
       setStatus({ type: 'success', message: 'Your request has been submitted successfully! We will contact you soon.' });
       setFormData({ clientName: '', mobileNumber: '', platform: '', message: '' });
       setFileName('');
-      // Reset file input
       const fileInput = document.getElementById('file-upload');
       if (fileInput) fileInput.value = '';
       
@@ -488,7 +487,7 @@ function AdSubmissionForm({ user }) {
             value={formData.mobileNumber}
             onChange={handleInputChange}
             className="w-full px-5 py-4 rounded-xl border-2 border-slate-100 focus:ring-0 focus:border-indigo-500 outline-none transition-all bg-slate-50 focus:bg-white text-slate-900 font-medium"
-            placeholder="+1 234 567 8900"
+            placeholder="+92 370 4093197"
           />
         </div>
       </div>
@@ -580,20 +579,16 @@ function DashboardView({ user }) {
     }
 
     const collectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'ad_requests');
-    // Using a simple query as requested by rules (no orderBy to avoid index requirements)
     const q = query(collectionRef);
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const data = snapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data(),
-        // Convert Firestore timestamp to Date safely
         date: doc.data().submittedAt?.toDate() || new Date() 
       }));
       
-      // Sort in memory (newest first)
       data.sort((a, b) => b.date - a.date);
-      
       setRequests(data);
       setLoading(false);
     }, (error) => {
